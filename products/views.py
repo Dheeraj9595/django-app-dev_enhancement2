@@ -53,8 +53,8 @@ class QRRequestFormView(AdminLoginRequiredMixin, GroupRequiredMixin, View):
             campaigns = campaign_models.Campaign.objects.all()
             selected_campaign = None
             markets = Market.objects.all()
-
-        local_brands = brand_models.LocalBrand.objects.all().exclude(brand=None)
+        allowed_brands = AccessTable.objects.filter(user=request.user).values_list('brands')
+        local_brands = brand_models.LocalBrand.objects.filter(brand__in=allowed_brands)
         brands = brand_models.Brand.objects.all()
         activities = Activity.objects.all()
         products = Product.objects.all()
@@ -499,3 +499,12 @@ def redirect_to_product_change(request, product_id):
 
     # Redirect to the product change page
     return redirect(change_url)
+
+
+from django.http import JsonResponse
+
+def user_brands(request):
+    user = request.user
+    user_brands_ids = list(user.accesstable_set.values_list('brands__local_brand', flat=True))
+    user_brands = brand_models.LocalBrand.objects.filter(id__in=user_brands_ids).values('id', 'local_brand_name')
+    return JsonResponse({'user_brands': list(user_brands)})

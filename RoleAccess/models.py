@@ -37,7 +37,7 @@ class AccessTable(models.Model):
         verbose_name_plural = _('Access Restrictions')
 
     def __repr__(self):
-        return f"AccessTable(user={self.user.username}, category={self.category}, brand={self.local_brands}, market={self.markets})"
+        return f"AccessTable(user={self.user.username}, category={self.category}, brand={self.brands}, market={self.markets})"
 
     def __str__(self):
         return f"{self.user}"

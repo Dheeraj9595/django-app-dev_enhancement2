@@ -123,7 +123,7 @@
                                                         <label for="division_name_input"  id="division_name_label" class="form-label" hidden>Division Name</label>
                                                         <input type="text" class="form-control" id="division_name_input" name="division_name" hidden>
                                                     </div> -->
-                                                    <div class="col-md-3 col-sm-12">
+                                                    <div id="local-brand-div" class="col-md-3 col-sm-12">
                                                         <div class="form-group">
                                                             <label for="local_brand_input" class="form-label">Local Brand<span class="text-danger"> *</span></label>
                                                             {{form.local_brand}}
@@ -612,6 +612,29 @@
                     utm_campaign_value_add(brand_code_input)
                 }
             };
+
+document.addEventListener('DOMContentLoaded', function() {
+    var selectElement = document.getElementById('local_brand_input_1_1');
+    var userBrandsUrl = '/products/userbrands/';
+
+    fetch(userBrandsUrl)
+        .then(response => response.json())
+        .then(data => {
+            var userBrands = data.user_brands;
+            var options = selectElement.options;
+
+            for (var i = 0; i < options.length; i++) {
+                if (!userBrands.some(brand => brand.local_brand_name === options[i].text)) {
+                    options[i].disabled = true;
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+});
+
+
 
             function add_iso_code(market_input){
                 var market_input_arr = market_input.id.split('_')

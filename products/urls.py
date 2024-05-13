@@ -8,7 +8,7 @@ from .views import (
     PlanningDashboardFormView,
     ProductView,
     product_and_qr_list,
-    redirect_to_product_change, QRRequestview
+    redirect_to_product_change, QRRequestview, user_brands
 )
 
 
@@ -33,5 +33,7 @@ urlpatterns = [
     ),
     path("products/", ProductView.as_view(), name="productview"),
     path('products_list/', product_and_qr_list, name='product_list'),
+    path('userbrands/', user_brands, name='product_list'),
+
     path('products/redirect_to_product_change/<int:product_id>/', redirect_to_product_change, name='redirect_to_product_change'),
 ]

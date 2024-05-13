@@ -165,7 +165,11 @@ class ORRequestForm(forms.Form):
         # self.fields['local_brand'].choices = [("", 'Select Local Brand')] + [
         #     (local_brand.id, local_brand.local_brand_name) for local_brand in
         #     brand_models.LocalBrand.objects.all().exclude(brand=None)] + [('Other', 'Other')]
-        allowed_brands = AccessTable.objects.all().values_list('brands', flat=True)
+
+        # allowed_brands = AccessTable.objects.filter(user=user).values_list('brands', flat=True)
+        allowed_brands = AccessTable.objects.all().values_list('brands')
+
+        # breakpoint()
         allowed_local_brands = LocalBrand.objects.filter(brand__in=allowed_brands)
         local_brand_choices = [(local_brand.id, local_brand.local_brand_name) for local_brand in allowed_local_brands]
         self.fields['local_brand'].choices = [("", 'Select Local Brand')] + local_brand_choices
