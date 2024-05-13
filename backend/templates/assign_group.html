@@ -103,7 +103,7 @@
                                         <div class="inner-section">
                                          <div>
                                             <input type="checkbox" id="active_{{ user.id }}" name="active_users" value="{{ user.id }}" {% if user.is_staff %}checked{% endif %}>
-                                            <label for="active_{{ user.id }}">{{ user.username }}</label>
+                                            <label for="active_{{ user.id }}"><a href="{% url 'user_detail' user.id %}">{{ user.username }}</a></label>
                                         </div>
                                         <form method="post" action="{% url 'remove_user_from_role' %}" style="display: inline;">
                                             {% csrf_token %}

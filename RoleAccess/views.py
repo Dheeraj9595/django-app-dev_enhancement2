@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.models import Group, User
 
 from .forms import AssignGroupForm
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.urls import reverse
 
@@ -75,3 +75,15 @@ def toggle_user_status(request):
         return render(request, 'toggle_user_status.html', {'users': users})
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})
+
+
+# def user_detail(request, user_id):
+#     user = get_object_or_404(User, pk=user_id)
+#     # You can add more context data if needed
+#     return render(request, 'assign_group.html', {'user': user})
+
+def user_detail(request, user_id):
+    # Assuming User is your custom user model
+    user = get_object_or_404(User, pk=user_id)
+    url = reverse('admin:%s_%s_change' % (user._meta.app_label, user._meta.model_name), args=[user_id])
+    return redirect(url)
